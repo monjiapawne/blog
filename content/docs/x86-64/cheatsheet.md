@@ -1,7 +1,7 @@
 +++
 date = '2026-04-22T21:19:13-04:00'
-title = 'x86-64 AT&T'
-weight = 1
+title = 'cheatsheet'
+weight = 2
 +++
 
 # x86-64 (AT&T Syntax)
@@ -33,23 +33,21 @@ weight = 1
 
 ---
 
-## ABI
+### Caller-Saved
 
-ABI - Application Binary Interface is a type of convetion for function calls, similar to how there is for syscalls.
-The ABI that linux uses is called - **System V ABI**
+registers the caller must save if needed after a call
 
-> **Why do I care? Why should I follow their convention?**  
-> It allows you to call functions written by other people, even in other programming langauges and allows you to estimate the behavor and safety of your registers/stack.
+```c
+%rax %rcx %rdx %rsi %rdi %r8 %r9 %r10 %r11
+```
 
+### Callee-Saved
 
+registers the callee must save and restore if used
 
-### Caller-Saved (volatile — assume clobbered after call)
-
-`%rax %rcx %rdx %rsi %rdi %r8 %r9 %r10 %r11`
-
-### Callee-Saved (must preserve if used)
-
-`%rbx %rbp %r12 %r13 %r14 %r15`
+```c
+%rbx %rbp %r12 %r13 %r14 %r15
+```
 
 ### Function Parameters
 
@@ -60,7 +58,7 @@ movq $3, %rdx
 movq $4, %rcx
 movq $5, %r8
 movq $6, %r9
-pushq $10       # after the first 6 registers use the stack
+pushq $10     # after the first 6 registers use the stack
 pushq $9
 pushq $8
 pushq $7
@@ -74,30 +72,20 @@ call myfunc
 %rdx   # secondary (rare)
 ```
 
-
-
 ---
 
 ## Syscalls
 
-
-
 ```gas
-%rax   # syscall number
-%rdi   # param 1
-%rsi   # param 2
-%rdx   # param 3
-%r10   # param 4
-%r8    # param 5
-%r9    # param 6
+%rax     # syscall number
+%rdi     # param 1
+%rsi     # param 2
+%rdx     # param 3
+%r10     # param 4
+%r8      # param 5
+%r9      # param 6
 syscall
-
 ```
-
-resources:
-
-
-
 
 ---
 
@@ -128,10 +116,14 @@ leave               # (leave is faster than manual)
 ret
 ```
 
-> **note:** if all work fits in registers and no callee-saved regs touched → skip frame setup entirely.  
-> If you don't use `enter` don't use `leave` it will result in a segment fault
+{{< notice tip >}}
+- If all work fits in registers and no callee-saved regs touched you can skip frame setup entirely  
+- If you don't use `enter` don't use `leave` it will result in a segment fault
+{{< /notice >}}
 
 ### Writing/Reading to the Stack
+
+#### Via Base Pointer (`%rbp`)
 
 ```gas
 .equ LOCAL_FOO, -8
@@ -143,6 +135,19 @@ movq %rax, LOCAL_FOO(%rbp)   # write
 movq LOCAL_FOO(%rbp), %rax   # read
 ```
 
+#### Via `push` / `pop`
+
+```gas
+pushq %rax    # push register onto stack
+popq  %rbx    # pop top of stack into register
+```
+
+When you push something onto the stack, it does two things:
+
+1. decrements `%rsp` to point to the next location on the stack
+2. copies the value to the location specified by `%rsp`
+
+`pop` instructions do the inverse
 
 ---
 
@@ -154,28 +159,3 @@ movq LOCAL_FOO(%rbp), %rax   # read
 call myfunc   # pushes return address onto stack, jumps to myfunc
 ret           # pops return address, jumps to it
 ```
-
-## Resources
-
-### Syscalls
-
-- [chromium docs](https://www.chromium.org/chromium-os/developer-library/reference/linux-constants/syscalls/)
-
-### Registers
-
-- https://go.dev/src/cmd/compile/abi-internal#amd64-architecture
-- https://wiki.osdev.org/CPU_Registers_x86-64
-
-### Instructions
-
-- http://ref.x86asm.net/coder64-abc.html
-- https://learning.oreilly.com/library/view/learn-to-program/9781484274378/html/514232_1_En_24_Chapter.xhtml
-
-
-### glibc
-
-- https://sourceware.org/glibc/manual/2.43/html_mono/libc.html#Streams
-
-### Books
-
-- Learn to Program with Assembly: Foundational Learning for New Programmers - Jonathan Bartlett

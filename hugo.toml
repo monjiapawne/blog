@@ -1,6 +1,15 @@
-baseURL = 'https://monjiapawne.github.io/me/'
+baseURL = 'https://monjiapawne.github.io/blog/'
 locale = 'en-us'
-title = 'me'
+title = 'monjiapawne'
+
+# [markup.goldmark.renderer]
+#  unsafe = true
 
 [markup.highlight]
-  style = 'emacs'
+  style = 'rrt'
+
+[module]
+  [[module.imports]]
+    path = "github.com/martignoni/hugo-notice"
+  [[module.imports]]
+    path = "hugo-book"

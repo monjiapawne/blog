@@ -1,14 +1,14 @@
 {
-  "name": "me",
-  "short_name": "me",
-  "start_url": "/me/",
-  "scope": "/me/",
+  "name": "monjiapawne",
+  "short_name": "monjiapawne",
+  "start_url": "/blog/",
+  "scope": "/blog/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
   "icons": [
     {
-      "src": "/me/favicon.svg",
+      "src": "/blog/favicon.svg",
       "sizes": "512x512"
     }
   ]

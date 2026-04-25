@@ -87,13 +87,7 @@
 &lt;/ul&gt;
 &lt;hr&gt;
 &lt;h3 id="caller-saved"&gt;Caller-Saved&lt;a class="anchor" href="#caller-saved"&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;registers the caller must save if needed after a call&lt;/p&gt;</description></item><item><title>concepts</title><link>https://monjiapawne.github.io/blog/docs/x86-64/concepts/</link><pubDate>Wed, 22 Apr 2026 21:19:13 -0400</pubDate><guid>https://monjiapawne.github.io/blog/docs/x86-64/concepts/</guid><description>&lt;h1 id="x86-64-att-syntax"&gt;x86-64 (AT&amp;amp;T Syntax)&lt;a class="anchor" href="#x86-64-att-syntax"&gt;#&lt;/a&gt;&lt;/h1&gt;
-&lt;h2 id="abi"&gt;ABI&lt;a class="anchor" href="#abi"&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;ABI - Application Binary Interface is a type of convention for function calls, similar to how there is for syscalls.
-The ABI that linux uses is called - &lt;strong&gt;System V ABI&lt;/strong&gt;&lt;/p&gt;
-&lt;blockquote class='book-hint '&gt;
-&lt;p&gt;&lt;strong&gt;Q:&lt;/strong&gt; Why do I care? Why should I follow their convention?&lt;/p&gt;
-&lt;/blockquote&gt;&lt;p&gt;It allows you to call functions written by other people, even in other programming languages and allows you to estimate the behavior and safety of your registers/stack.&lt;/p&gt;</description></item><item><title>resources</title><link>https://monjiapawne.github.io/blog/docs/x86-64/resources/</link><pubDate>Wed, 22 Apr 2026 21:19:13 -0400</pubDate><guid>https://monjiapawne.github.io/blog/docs/x86-64/resources/</guid><description>&lt;h1 id="resources"&gt;resources&lt;a class="anchor" href="#resources"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;p&gt;registers the caller must save if needed after a call&lt;/p&gt;</description></item><item><title>resources</title><link>https://monjiapawne.github.io/blog/docs/x86-64/resources/</link><pubDate>Wed, 22 Apr 2026 21:19:13 -0400</pubDate><guid>https://monjiapawne.github.io/blog/docs/x86-64/resources/</guid><description>&lt;h1 id="resources"&gt;resources&lt;a class="anchor" href="#resources"&gt;#&lt;/a&gt;&lt;/h1&gt;
 &lt;h2 id="syscalls"&gt;Syscalls&lt;a class="anchor" href="#syscalls"&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://www.chromium.org/chromium-os/developer-library/reference/linux-constants/syscalls/"&gt;chromium docs&lt;/a&gt;&lt;/li&gt;
@@ -119,4 +113,27 @@ The ABI that linux uses is called - &lt;strong&gt;System V ABI&lt;/strong&gt;&lt
 
 &lt;ul&gt;
 &lt;li&gt;Learn to Program with Assembly: Foundational Learning for New Programmers - Jonathan Bartlett&lt;/li&gt;
-&lt;/ul&gt;</description></item></channel></rss>
+&lt;/ul&gt;</description></item><item><title>concepts</title><link>https://monjiapawne.github.io/blog/docs/x86-64/concepts/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://monjiapawne.github.io/blog/docs/x86-64/concepts/</guid><description>&lt;h1 id="x86-64-att-syntax"&gt;x86-64 (AT&amp;amp;T Syntax)&lt;a class="anchor" href="#x86-64-att-syntax"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="abi"&gt;ABI&lt;a class="anchor" href="#abi"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;ABI - Application Binary Interface is a type of convention for function calls, similar to how there is for syscalls.
+The ABI that linux uses is called - &lt;strong&gt;System V ABI&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote class='book-hint '&gt;
+&lt;p&gt;&lt;strong&gt;Q:&lt;/strong&gt; Why do I care? Why should I follow their convention?&lt;/p&gt;
+&lt;/blockquote&gt;&lt;p&gt;It allows you to call functions written by other people, even in other programming languages and allows you to estimate the behavior and safety of your registers/stack.&lt;/p&gt;</description></item><item><title>examples</title><link>https://monjiapawne.github.io/blog/docs/x86-64/examples/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://monjiapawne.github.io/blog/docs/x86-64/examples/</guid><description>&lt;h1 id="examples"&gt;Examples&lt;a class="anchor" href="#examples"&gt;#&lt;/a&gt;&lt;/h1&gt;
+&lt;h2 id="glibc-function-call-fprintf"&gt;glibc function call fprintf&lt;a class="anchor" href="#glibc-function-call-fprintf"&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-gas" data-lang="gas"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#0f0"&gt;# Prints &amp;#34;25&amp;#34; to stdout
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#0f0"&gt;# build: gcc -static print_example.s
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;.globl &lt;span style="color:#7fffd4"&gt;main&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;.section &lt;span style="color:#7fffd4"&gt;.data&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;fmt_int:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .ascii &lt;span style="color:#87ceeb"&gt;&amp;#34;%d\n\0&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;.section &lt;span style="color:#7fffd4"&gt;.text&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;main:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#ff0"&gt;movq&lt;/span&gt; &lt;span style="color:#7fffd4"&gt;stdout&lt;/span&gt;, &lt;span style="color:#eedd82"&gt;%rdi&lt;/span&gt; &lt;span style="color:#0f0"&gt;# arg1: FILE* stdout 
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#ff0"&gt;movq&lt;/span&gt; &lt;span style="color:#7fffd4"&gt;$fmt_int&lt;/span&gt;, &lt;span style="color:#eedd82"&gt;%rsi&lt;/span&gt; &lt;span style="color:#0f0"&gt;# arg2: format string
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#ff0"&gt;movq&lt;/span&gt; &lt;span style="color:#7fffd4"&gt;$25&lt;/span&gt;, &lt;span style="color:#eedd82"&gt;%rdx&lt;/span&gt; &lt;span style="color:#0f0"&gt;# arg3: integer to print
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#ff0"&gt;movq&lt;/span&gt; &lt;span style="color:#7fffd4"&gt;$0&lt;/span&gt;, &lt;span style="color:#eedd82"&gt;%rax&lt;/span&gt; &lt;span style="color:#0f0"&gt;# no floating-point args (required by ABI)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#ff0"&gt;call&lt;/span&gt; &lt;span style="color:#7fffd4"&gt;fprintf&lt;/span&gt; &lt;span style="color:#0f0"&gt;# fprintf(stdout, &amp;#34;%d\n&amp;#34;, 25)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#ff0"&gt;mov&lt;/span&gt; &lt;span style="color:#7fffd4"&gt;$0&lt;/span&gt;, &lt;span style="color:#eedd82"&gt;%rax&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#ff0"&gt;ret&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description></item></channel></rss>

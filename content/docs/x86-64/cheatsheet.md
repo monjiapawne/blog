@@ -159,3 +159,16 @@ When you push something onto the stack, it does two things:
 call myfunc   # pushes return address onto stack, jumps to myfunc
 ret           # pops return address, jumps to it
 ```
+
+## Instructions
+
+### Comparison, Branching, and Looping Instructions
+
+| Instruction | Desc                                                                        |
+| ----------- | --------------------------------------------------------------------------- |
+| `cmp s, d`  | cmp `src` to `dst` perform virtual subtraction (src - dst), only sets flags |
+| `test s, d` | `AND` the `src` & `dst` and sets flags                                      |
+| `loop d`    | decrements `%rcx` and jumps to `dst` if %rcx is not 0                       |
+| `loope d`   | same as `loop`, but also will not jump if the zero flag is set              |
+| `loope d`   | same as `loop`, but also will not jump if the zero flag is **not** set      |
+

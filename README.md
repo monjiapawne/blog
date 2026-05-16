@@ -9,5 +9,5 @@ Hugo blog mainly my cheetsheets
 ## Hugo
 
 ```bash
-hugo server --baseURL http://localhost:1313/
+hugo server --baseURL http://localhost:1313/ 
 ```

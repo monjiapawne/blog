@@ -11,3 +11,4 @@ Hugo blog mainly my cheetsheets
 ```bash
 hugo server --baseURL http://localhost:1313/ 
 ```
+
